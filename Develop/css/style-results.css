@@ -71,4 +71,7 @@ nav {
 /* Setting top margin for the card body img in the 5-day forecast div elements */
 .card-body img {
     margin-top: -25px;
+    margin-left: 5px;
+    margin-bottom: 6px;
+    background-color: white;
 }

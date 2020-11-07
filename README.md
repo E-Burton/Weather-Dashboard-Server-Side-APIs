@@ -64,4 +64,6 @@ THEN I am again presented with current and future conditions for that city
 
 * [Set Text Background Color in jQuery](https://www.tutorialspoint.com/How-to-set-background-color-in-jQuery)
 
+* [jQuery detach()](https://www.w3schools.com/jquery/html_detach.asp)
+
 

@@ -1,85 +1,18 @@
-// VARIABLE DECLARATIONS
-// var searchButton = $('.btn');
-var searchButton = $("#button-addon2");
-var userInput;
-// var userInputNoSpaces;
-var apiKey = "42577eee140aa265525ab9ec590d2394";
-
-// Declarations for current weather div elements
-var currentCity = $('#current-city');
-// var currentIcon = $('#current-icon');
-var currentTemp = $('#current-temp');
-var currentHumidity = $('#current-humidity');
-var currentWind = $('#current-wind-speed');
-var currentUV = $('#current-uv-index');
-var cityLongitude;
-var cityLatitude;
-
-// Declarations for 5-day forecast div elements
-var forecastDay1 = $("#forecast-day-1");
-var iconDay1 = $("#icon-day-1");
-var tempDay1 = $("#temp-day-1");
-var humidityDay1 = $("#humidity-day-1");
-
-var forecastDay2 = $("#forecast-day-2");
-var iconDay2 = $("#icon-day-2");
-var tempDay2 = $("#temp-day-2");
-var humidityDay2 = $("#humidity-day-2");
-
-var forecastDay3 = $("#forecast-day-3");
-var iconDay3 = $("#icon-day-3");
-var tempDay3 = $("#temp-day-3");
-var humidityDay3 = $("#humidity-day-3");
-
-var forecastDay4 = $("#forecast-day-4");
-var iconDay4 = $("#icon-day-4");
-var tempDay4 = $("#temp-day-4");
-var humidityDay4 = $("#humidity-day-4");
-
-var forecastDay5 = $("#forecast-day-5");
-var iconDay5 = $("#icon-day-5");
-var tempDay5 = $("#temp-day-5");
-var humidityDay5 = $("#humidity-day-5");
-
-// Declarations for location-search and past-searches div elements
-var searchHistory = $("#past-searches");
-var recentCity;
-
-// Clear 
-$("#clear-search-history").on("click", function() {
-    localStorage.clear();
-    $(".search-history-button").detach();
-})
-
-// Adding 'on click' event listener to search button on homepage
-searchButton.on('click', function () {
-    // Storing value of input field in var userInput
-    userInput = $(this).parent().siblings("#homepage-search").val();
-    localStorage.setItem("userCityInput", userInput);
-    // If the value of userInput has any spaces, replace the space with '+' and store as new value of userInput
-    userInputNoSpaces = userInput.replace(/\s/g, '+');
-    localStorage.setItem("userCityInputNoSpaces", userInputNoSpaces);
-    window.location.href = './Develop/search-results.html'; // When user clicks on search button, change current html to search-results.html
-})
-
 window.onload = function results () {
-    userCityInput = localStorage.getItem("userCityInput");
-    console.log(userCityInput);
-    userCityInputNoSpaces = localStorage.getItem("userCityInputNoSpaces");
-    console.log(userCityInputNoSpaces);
-    saveCitySearch(userCityInput, userCityInputNoSpaces); // Call saveCitySearch with userInput and userInputNoSpaces as parameters
-    getWeather(userCityInputNoSpaces); // Call getWeather function
+    saveCitySearch(userInput, userInputNoSpaces); // Call saveCitySearch with userInput and userInputNoSpaces as parameters
+    getWeather(userInputNoSpaces); // Call getWeather function
+    displaySearchHistory() // Call displaySearchHistory function
 }
 
 // Creatiing function getWeather that does an API call for current weather for city (i.e. userInput)
-function getWeather(userCityInputNoSpaces) {
+function getWeather(userInputNoSpaces) {
     $.ajax({
-        url: "https://api.openweathermap.org/data/2.5/weather?q=" +  userCityInputNoSpaces + "&units=imperial&appid=" + apiKey, 
+        url: "https://api.openweathermap.org/data/2.5/weather?q=" + userInputNoSpaces + "&units=imperial&appid=" + apiKey, 
         success: function (data) {
             console.log(data);
             
             var currentDate = data.dt; // Create var currentDate with value equal to unix timestamp in reponse data
-            currentCity.text(userCityInput + ", " + moment.unix(currentDate).format("ddd. MM/DD/YY")); // Set currentCity element text equal to currentDate format specified with moment.js
+            currentCity.text(userInput + " " + moment.unix(currentDate).format("ddd. MM/DD/YY")); // Set currentCity element text equal to currentDate format specified with moment.js
 
             var iconCode = data.weather[0].icon; // Create var iconCode with value equal to weather icon code in response data
             var currentIcon = $("<img>"); // Create var currentIcon with value equal to new HTML img tag
@@ -177,21 +110,18 @@ function get_five_day_forecast(cityLatitude, cityLongitude) {
 }
 
 // Creating function called saveCitySearch with userInput and userInputNoSpaces as parameters
-function saveCitySearch(userCityInput, userCityInputNoSpaces) {
+function saveCitySearch(userInput, userInputNoSpaces) {
     // Parse any JSON previously stored in allSearches
     var existingSearches = JSON.parse(localStorage.getItem("allSearches"));
     if(existingSearches === null) existingSearches = []; 
-    if (userCityInput !== null & userCityInputNoSpaces !== null){
-        var searchHistoryEntry = {
-            City: userCityInput,
-            CityNoSpaces: userCityInputNoSpaces
-        };
-        localStorage.setItem("seachHistoryEntry", JSON.stringify(searchHistoryEntry));
-        // Save allSeaches back to local storage
-        existingSearches.push(searchHistoryEntry);
-        localStorage.setItem("allSearches", JSON.stringify(existingSearches));
-    }
-    displaySearchHistory() // Call displaySearchHistory function
+    var searchHistoryEntry = {
+        City: userInput,
+        CityNoSpaces: userInputNoSpaces
+    };
+    localStorage.setItem("seachHistoryEntry", JSON.stringify(searchHistoryEntry));
+    // Save allSeaches back to local storage
+    existingSearches.push(searchHistoryEntry);
+    localStorage.setItem("allSearches", JSON.stringify(existingSearches));
 }
 
 // Creating function called displaySearchHistory 
@@ -199,16 +129,13 @@ function displaySearchHistory() {
 
     // Create var savedCities with value equal to JSON.parse of allSearches from local storage
     var savedCities = JSON.parse(localStorage.getItem("allSearches"));
-    console.log(savedCities);
 
     // Creating button for each item/object in savedCities array, setting var recentCity text equal to userInput, and appending to searchHistory element in HTML document
     for (var i = 0; i < savedCities.length; i++) {
-        recentCity = $("<button>");
-        recentCity.attr({
-            class: "btn btn-light btn-outline-secondary text-dark search-history-button",
-            type: "button",
-        })
-        recentCity.text(savedCities[i].City);
+        var recentCity = $("<button>");
+        recentCity.attr("class", "btn btn-light btn-outline-secondary text-dark");
+        recentCity.attr("type", "button");
+        recentCity.text(savedCities[i].userInput);
         searchHistory.append(recentCity);
       }
 }
