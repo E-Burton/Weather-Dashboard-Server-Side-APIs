@@ -1,0 +1,31 @@
+/* Setting background color and padding for nav element */
+nav {
+    padding: 10px;
+    background-color: aquamarine;
+}
+
+/* Setting background color of homepage search input container */
+.container-fluid {
+    background-color: plum;
+}
+
+/* Setting location search id div element to: flex display, with height equal to 100% of viewport, with content centered */
+#location-search {
+    margin: 0 auto;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Adding rounded corners/borders to seach input field element and centering placeholder text */
+#homepage-search {
+    border-radius: 30px 0px 0px 30px;
+    text-align: center;
+}
+
+/* Adding rounded corners/borders to 'See Weather' button */
+.btn {
+    border-radius: 30px;
+    color: white;
+}

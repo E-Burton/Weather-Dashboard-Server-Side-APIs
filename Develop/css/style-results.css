@@ -1,0 +1,74 @@
+/* Setting background color and padding for nav element */
+nav {
+    padding: 10px;
+    background-color: aquamarine;
+}
+
+/* Setting background color of weather search results container */
+.container-fluid {
+    /* height: 100vh; */
+    background-color: plum;
+}
+
+/* Adding top and left margin to div element for new location search and past searches */
+#location-search {
+    margin-top: 15px;
+    margin-left: 25px;
+}
+
+/* Adding margin and rounded corners/border to input field; centering placeholder text */
+#new-search {
+    margin-top: 8px;
+    border-radius: 30px 0px 0px 30px;
+    text-align: center;
+}
+
+/* Adding rounded corners/border to blue search button icon */
+.btn-primary {
+    border-radius: 30px;
+    margin-top: 8px;
+    margin-right: 65px;
+    color: white;
+}
+
+#past-searches {
+    display: flex;
+    direction: column;
+}
+
+#past-searches button {
+    width: 80%;
+}
+
+/* Setting top margin for weather search results div element */
+#search-results {
+    margin-top: 15px;
+}
+
+/* Setting img height and top margin for current day for city search weather icon */
+#current-city img {
+    height: 55px;
+    margin-top: -10px;
+}
+
+/* Setting 5-day forecast div element to flex display with wrapping */
+#five-day-forecast {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Setting 5-day forecast h5 div element to span entire line width */
+#five-day-forecast h5 {
+    width: 100%;
+}
+
+/* Setting right and top margins for cards in the 5-day foreacst div element */
+.card {
+    margin-right: 12px;
+    margin-top: 5px;
+}
+
+/* Setting top margin for the card body img in the 5-day forecast div elements */
+.card-body img {
+    margin-top: -25px;
+}

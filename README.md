@@ -32,10 +32,36 @@ THEN I am again presented with current and future conditions for that city
 
 ## Tools Implemented
 
+* Bootstrap
+
+* jQuery
+
 * [OpenWeather API](https://openweathermap.org/api)
 
 ## Challenges
 
 ## Link to Website
 
+* [Weather Dashboard](https://e-burton.github.io/Weather-Dashboard-Server-Side-APIs/)
+
 ## Additional Resources used for Finished Project
+
+* [How to Create Search Button Icon](https://www.w3schools.com/howto/howto_css_search_button.asp)
+
+* [CSS Rounded Corners](https://www.w3schools.com/css/css3_borders.asp)
+
+* [Forcing Flex Items to Span Entire Row](https://stackoverflow.com/questions/48101046/force-flex-item-to-span-full-row-width#:~:text=2%20Answers&text=When%20you%20want%20a%20flex,now%20consumes%20all%20available%20space.)
+
+* [Convert Unix Timestap to Calendar Date in moment.js](https://stackoverflow.com/questions/20943089/how-to-convert-unix-timestamp-to-calendar-date-moment-js/20943421)
+
+* [How to Replace White Space in JavaScript](https://flaviocopes.com/how-to-replace-whitespace-javascript/)
+
+* [Displaying Special Symbols in JavaScript](http://www.javascripter.net/faq/mathsymbols.htm)
+
+* [A Guide to the UV Index](https://www.epa.gov/sites/production/files/documents/uviguide.pdf)
+
+* [Highligting Text](https://www.computerhope.com/issues/ch001391.htm#both)
+
+* [Set Text Background Color in jQuery](https://www.tutorialspoint.com/How-to-set-background-color-in-jQuery)
+
+
