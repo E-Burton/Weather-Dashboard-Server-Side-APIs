@@ -40,6 +40,12 @@ THEN I am again presented with current and future conditions for that city
 
 ## Challenges
 
+* Passing value of `var userInput` when search button is clciked on main homepage to `getWeather()` function called once search-results.html file is loaded.
+    **Solution:** Saving value of `var userInput` and `var userCityInputNoSpaces` to local storage.
+
+* Search History Buttons: (1) preventing search buttons from repeating with each new search, and (2) removing all buttons when the Clear Search History Button is clicked
+     **Solution:** `detach()` method.
+
 ## Link to Website
 
 * [Weather Dashboard](https://e-burton.github.io/Weather-Dashboard-Server-Side-APIs/)
@@ -66,4 +72,5 @@ THEN I am again presented with current and future conditions for that city
 
 * [jQuery detach()](https://www.w3schools.com/jquery/html_detach.asp)
 
+* [Delegated Event Handlers](https://stackoverflow.com/questions/18189948/jquery-button-click-function-is-not-working)
 

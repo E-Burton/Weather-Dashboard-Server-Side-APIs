@@ -2,12 +2,13 @@
 // var searchButton = $('.btn');
 var searchButton = $("#button-addon2");
 var userInput;
-// var userInputNoSpaces;
+var userInputNoSpaces;
+var userCityInput;
+var userCityInputNoSpaces;
 var apiKey = "42577eee140aa265525ab9ec590d2394";
 
 // Declarations for current weather div elements
 var currentCity = $('#current-city');
-// var currentIcon = $('#current-icon');
 var currentTemp = $('#current-temp');
 var currentHumidity = $('#current-humidity');
 var currentWind = $('#current-wind-speed');
@@ -43,9 +44,8 @@ var humidityDay5 = $("#humidity-day-5");
 
 // Declarations for location-search and past-searches div elements
 var searchHistory = $("#past-searches");
-var recentCity;
 
-// Clear 
+// Clear city search history on button click
 $("#clear-search-history").on("click", function() {
     localStorage.clear();
     $(".search-history-button").detach();
@@ -54,25 +54,48 @@ $("#clear-search-history").on("click", function() {
 // Adding 'on click' event listener to search button on homepage
 searchButton.on('click', function () {
     // Storing value of input field in var userInput
-    userInput = $(this).parent().siblings("#homepage-search").val();
+    userInput = $(this).parent().siblings(".search-city").val();
+    // Save value of userInput in local storage
     localStorage.setItem("userCityInput", userInput);
-    // If the value of userInput has any spaces, replace the space with '+' and store as new value of userInput
+    // If the value of userInput has any spaces, replace the space with '+' and store value in var userInputNoSpaces
     userInputNoSpaces = userInput.replace(/\s/g, '+');
+    // Save value of userInputNoSpaces to local storage
     localStorage.setItem("userCityInputNoSpaces", userInputNoSpaces);
-    window.location.href = './Develop/search-results.html'; // When user clicks on search button, change current html to search-results.html
+
+    userCityInput = userInput; // Set value of userCityInput equal to userInput
+    userCityInputNoSpaces = userInputNoSpaces; // Set value of userCityInputNoSpaces equal to userInputNoSpaces
+    getWeather(userCityInput, userCityInputNoSpaces); // Call function get weather with userCityInput and userCityInputNoSpaces as parameters
+    saveCitySearch(userCityInput, userCityInputNoSpaces);
+    
+    // if (window.location.pathname = '../index.html') {
+    //     window.location.href = './Develop/search-results.html'; // When user clicks on search button, change current html to search-results.html
+    //     // window.onload = function results () {
+    //     //     userCityInput = localStorage.getItem("userCityInput");
+    //     //     console.log(userCityInput);
+    //     //     userCityInputNoSpaces = localStorage.getItem("userCityInputNoSpaces");
+    //     //     console.log(userCityInputNoSpaces);
+    //     //     getWeather(userCityInputNoSpaces); // Call getWeather function
+    //     // }
+    //     // saveCitySearch(userCityInput, userCityInputNoSpaces); // Call saveCitySearch with userInput and userInputNoSpaces as parameters
+    // } else {
+    //     // userCityInput = userInput;
+    //     // userCityInputNoSpaces = userInputNoSpaces;
+    //     // saveCitySearch(userCityInput, userCityInputNoSpaces);
+    //     getWeather(userCityInputNoSpaces);
+    // }
 })
 
-window.onload = function results () {
-    userCityInput = localStorage.getItem("userCityInput");
-    console.log(userCityInput);
-    userCityInputNoSpaces = localStorage.getItem("userCityInputNoSpaces");
-    console.log(userCityInputNoSpaces);
-    saveCitySearch(userCityInput, userCityInputNoSpaces); // Call saveCitySearch with userInput and userInputNoSpaces as parameters
-    getWeather(userCityInputNoSpaces); // Call getWeather function
-}
+// window.onload = function results () {
+//     userCityInput = localStorage.getItem("userCityInput");
+//     console.log(userCityInput);
+//     userCityInputNoSpaces = localStorage.getItem("userCityInputNoSpaces");
+//     console.log(userCityInputNoSpaces);
+//     // saveCitySearch(userCityInput, userCityInputNoSpaces); // Call saveCitySearch with userInput and userInputNoSpaces as parameters
+//     getWeather(userCityInputNoSpaces); // Call getWeather function
+// }
 
-// Creatiing function getWeather that does an API call for current weather for city (i.e. userInput)
-function getWeather(userCityInputNoSpaces) {
+// Creating function getWeather that does an API call for current weather for city input by user -- userCityInput and userCityInputNoSpaces are parameters 
+function getWeather(userCityInput, userCityInputNoSpaces) {
     $.ajax({
         url: "https://api.openweathermap.org/data/2.5/weather?q=" +  userCityInputNoSpaces + "&units=imperial&appid=" + apiKey, 
         success: function (data) {
@@ -176,7 +199,7 @@ function get_five_day_forecast(cityLatitude, cityLongitude) {
     })
 }
 
-// Creating function called saveCitySearch with userInput and userInputNoSpaces as parameters
+// Creating function called saveCitySearch with userCityInput and userCityInputNoSpaces as parameters
 function saveCitySearch(userCityInput, userCityInputNoSpaces) {
     // Parse any JSON previously stored in allSearches
     var existingSearches = JSON.parse(localStorage.getItem("allSearches"));
@@ -200,15 +223,23 @@ function displaySearchHistory() {
     // Create var savedCities with value equal to JSON.parse of allSearches from local storage
     var savedCities = JSON.parse(localStorage.getItem("allSearches"));
     console.log(savedCities);
-
+    $(".search-history-button").detach();
     // Creating button for each item/object in savedCities array, setting var recentCity text equal to userInput, and appending to searchHistory element in HTML document
     for (var i = 0; i < savedCities.length; i++) {
-        recentCity = $("<button>");
+        var recentCity = $("<button>");
         recentCity.attr({
             class: "btn btn-light btn-outline-secondary text-dark search-history-button",
             type: "button",
+            value: savedCities[i].CityNoSpaces
         })
         recentCity.text(savedCities[i].City);
         searchHistory.append(recentCity);
       }
 }
+
+// Add on click event listener to searchHistory div element for button with class search-history-button
+searchHistory.on("click", ".search-history-button",function () {
+    userCityInput = $(this).text(); // Set value of userCityInput equal to text value of button clicked
+    userCityInputNoSpaces = $(this).val(); // Set value of userCityInputNoSpaces equal to value attribute of button clicked
+    getWeather(userCityInput, userCityInputNoSpaces); // Call function getWeather with userCityInput and userCityInputNoSpaces as parameters
+})
