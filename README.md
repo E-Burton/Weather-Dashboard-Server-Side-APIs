@@ -40,11 +40,11 @@ THEN I am again presented with current and future conditions for that city
 
 ## Challenges
 
-* Passing value of `var userInput` when search button is clciked on main homepage to `getWeather()` function called once search-results.html file is loaded.
+* Passing value of `var userInput` when search button is clciked on main homepage to `getWeather()` function called once search-results.html file is loaded.<br>
     **Solution:** Saving value of `var userInput` and `var userCityInputNoSpaces` to local storage.
 
-* Search History Buttons: (1) preventing search buttons from repeating with each new search, and (2) removing all buttons when the Clear Search History Button is clicked
-     **Solution:** `detach()` method.
+* Search History Buttons: (1) preventing search buttons from repeating with each new search, and (2) removing all buttons when the Clear Search History Button is clicked. <br>
+    **Solution:** `detach()` method.
 
 ## Link to Website
 
@@ -74,3 +74,8 @@ THEN I am again presented with current and future conditions for that city
 
 * [Delegated Event Handlers](https://stackoverflow.com/questions/18189948/jquery-button-click-function-is-not-working)
 
+* [Remove Duplicates from an Array of Objects](https://stackoverflow.com/questions/2218999/remove-duplicates-from-an-array-of-objects-in-javascript)
+
+* [Get Last Item from Array](https://stackoverflow.com/questions/3216013/get-the-last-item-in-an-array)
+
+* [Capitalize First Letter of Each Word as User is Typing](https://www.c-sharpcorner.com/blogs/how-to-uppercase-or-capitalize-first-letter-of-each-word-using-jquery)

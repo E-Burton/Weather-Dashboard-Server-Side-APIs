@@ -1,5 +1,4 @@
 // VARIABLE DECLARATIONS
-// var searchButton = $('.btn');
 var searchButton = $("#button-addon2");
 var userInput;
 var userInputNoSpaces;
@@ -42,60 +41,55 @@ var iconDay5 = $("#icon-day-5");
 var tempDay5 = $("#temp-day-5");
 var humidityDay5 = $("#humidity-day-5");
 
-// Declarations for location-search and past-searches div elements
+// Declaration for past-searches div element
 var searchHistory = $("#past-searches");
 
-// Clear city search history on button click
-$("#clear-search-history").on("click", function() {
-    localStorage.clear();
-    $(".search-history-button").detach();
-})
+// When window/page loads 
+window.onload = function () {
 
-// Adding 'on click' event listener to search button on homepage
+    // Capitalize the first letter of each word as user types
+    $(".search-city").keyup(function () {  
+        $(".search-city").css('textTransform', 'capitalize');  
+    });
+
+    userCityInput = localStorage.getItem("userCityInput"); // Set var userCityInput equal to item userCityInput from local storage
+    console.log(userCityInput);
+    userCityInputNoSpaces = localStorage.getItem("userCityInputNoSpaces"); // Set var userCityInputNoSpaces equal to item userCityInputNoSpaces from local storage
+    console.log(userCityInputNoSpaces);
+
+    getWeather(userCityInput, userCityInputNoSpaces); // Call getWeather function
+    saveCitySearch(userCityInput, userCityInputNoSpaces); // Call saveCitySearch with userInput and userInputNoSpaces as parameters
+}
+
+// Adding 'on click' event listener to search button on search-results.html
 searchButton.on('click', function () {
     // Storing value of input field in var userInput
     userInput = $(this).parent().siblings(".search-city").val();
+    var userInputCap = capitalizeWords(userInput);
     // Save value of userInput in local storage
-    localStorage.setItem("userCityInput", userInput);
+    localStorage.setItem("userCityInput", userInputCap);
     // If the value of userInput has any spaces, replace the space with '+' and store value in var userInputNoSpaces
-    userInputNoSpaces = userInput.replace(/\s/g, '+');
+    userInputNoSpaces = userInputCap.replace(/\s/g, '+');
     // Save value of userInputNoSpaces to local storage
     localStorage.setItem("userCityInputNoSpaces", userInputNoSpaces);
 
-    userCityInput = userInput; // Set value of userCityInput equal to userInput
+    userCityInput = userInputCap; // Set value of userCityInput equal to userInput
     userCityInputNoSpaces = userInputNoSpaces; // Set value of userCityInputNoSpaces equal to userInputNoSpaces
+
     getWeather(userCityInput, userCityInputNoSpaces); // Call function get weather with userCityInput and userCityInputNoSpaces as parameters
     saveCitySearch(userCityInput, userCityInputNoSpaces);
-    
-    // if (window.location.pathname = '../index.html') {
-    //     window.location.href = './Develop/search-results.html'; // When user clicks on search button, change current html to search-results.html
-    //     // window.onload = function results () {
-    //     //     userCityInput = localStorage.getItem("userCityInput");
-    //     //     console.log(userCityInput);
-    //     //     userCityInputNoSpaces = localStorage.getItem("userCityInputNoSpaces");
-    //     //     console.log(userCityInputNoSpaces);
-    //     //     getWeather(userCityInputNoSpaces); // Call getWeather function
-    //     // }
-    //     // saveCitySearch(userCityInput, userCityInputNoSpaces); // Call saveCitySearch with userInput and userInputNoSpaces as parameters
-    // } else {
-    //     // userCityInput = userInput;
-    //     // userCityInputNoSpaces = userInputNoSpaces;
-    //     // saveCitySearch(userCityInput, userCityInputNoSpaces);
-    //     getWeather(userCityInputNoSpaces);
-    // }
 })
-
-// window.onload = function results () {
-//     userCityInput = localStorage.getItem("userCityInput");
-//     console.log(userCityInput);
-//     userCityInputNoSpaces = localStorage.getItem("userCityInputNoSpaces");
-//     console.log(userCityInputNoSpaces);
-//     // saveCitySearch(userCityInput, userCityInputNoSpaces); // Call saveCitySearch with userInput and userInputNoSpaces as parameters
-//     getWeather(userCityInputNoSpaces); // Call getWeather function
-// }
 
 // Creating function getWeather that does an API call for current weather for city input by user -- userCityInput and userCityInputNoSpaces are parameters 
 function getWeather(userCityInput, userCityInputNoSpaces) {
+
+    if (userCityInput === "" & userCityInputNoSpaces === "") {
+        var lastCity = JSON.parse(localStorage.getItem("allSearches")); 
+
+        userCityInput = lastCity[lastCity.length - 1].City;
+        userCityInputNoSpaces = lastCity[lastCity.length -1].CityNoSpaces;
+    }
+
     $.ajax({
         url: "https://api.openweathermap.org/data/2.5/weather?q=" +  userCityInputNoSpaces + "&units=imperial&appid=" + apiKey, 
         success: function (data) {
@@ -204,17 +198,24 @@ function saveCitySearch(userCityInput, userCityInputNoSpaces) {
     // Parse any JSON previously stored in allSearches
     var existingSearches = JSON.parse(localStorage.getItem("allSearches"));
     if(existingSearches === null) existingSearches = []; 
-    if (userCityInput !== null & userCityInputNoSpaces !== null){
+    if (userCityInput !== "" & userCityInputNoSpaces !== "" & userCityInput !== null & userCityInputNoSpaces !== null){
         var searchHistoryEntry = {
             City: userCityInput,
             CityNoSpaces: userCityInputNoSpaces
         };
-        localStorage.setItem("seachHistoryEntry", JSON.stringify(searchHistoryEntry));
+        // localStorage.setItem("seachHistoryEntry", JSON.stringify(searchHistoryEntry));
         // Save allSeaches back to local storage
         existingSearches.push(searchHistoryEntry);
-        localStorage.setItem("allSearches", JSON.stringify(existingSearches));
+        // Create variable called uniqueCities and set the value equal to function getUniqueCities with existingSearches array and key 'City' as parameters
+        var uniqueCities = getUniqueCities(existingSearches, "City");
+        localStorage.setItem("allSearches", JSON.stringify(uniqueCities));
     }
     displaySearchHistory() // Call displaySearchHistory function
+}
+
+// Create function getUnitqueCities with array and key as parameters to return new array with ducplicates removed in given array with specific object key
+function getUniqueCities(array, key) {
+    return [...new Map(array.map(item => [item[key], item])).values()]
 }
 
 // Creating function called displaySearchHistory 
@@ -224,6 +225,7 @@ function displaySearchHistory() {
     var savedCities = JSON.parse(localStorage.getItem("allSearches"));
     console.log(savedCities);
     $(".search-history-button").detach();
+
     // Creating button for each item/object in savedCities array, setting var recentCity text equal to userInput, and appending to searchHistory element in HTML document
     for (var i = 0; i < savedCities.length; i++) {
         var recentCity = $("<button>");
@@ -243,3 +245,16 @@ searchHistory.on("click", ".search-history-button",function () {
     userCityInputNoSpaces = $(this).val(); // Set value of userCityInputNoSpaces equal to value attribute of button clicked
     getWeather(userCityInput, userCityInputNoSpaces); // Call function getWeather with userCityInput and userCityInputNoSpaces as parameters
 })
+
+// Clear city search history on button click
+$("#clear-search-history").on("click", function() {
+    localStorage.clear();
+    $(".search-history-button").detach();
+})
+
+// Create function captializeWords to return string with the first letter of each word captialized
+function capitalizeWords(str) {
+    return str.replace(/\w\S*/g, function(txt){
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+}
