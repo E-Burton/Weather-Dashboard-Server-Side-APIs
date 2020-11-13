@@ -124,7 +124,7 @@ function getWeather(userCityInput, userCityInputNoSpaces) {
 // Creating function UV_Index with cityLatitude and CityLongitude as parameters
 function UV_Index(cityLatitude, cityLongitude){
     $.ajax({
-        url: "http://api.openweathermap.org/data/2.5/uvi?lat=" + cityLatitude + "&lon=" + cityLongitude + "&appid=" + apiKey,
+        url: "https://api.openweathermap.org/data/2.5/uvi?lat=" + cityLatitude + "&lon=" + cityLongitude + "&appid=" + apiKey,
         success: function (data) {
             console.log(data);
             
