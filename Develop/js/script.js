@@ -63,6 +63,7 @@ window.onload = function () {
 
 // Adding 'on click' event listener to search button on search-results.html
 searchButton.on('click', function () {
+
     // Storing value of input field in var userInput
     userInput = $(this).parent().siblings(".search-city").val();
     var userInputCap = capitalizeWords(userInput);
@@ -78,6 +79,10 @@ searchButton.on('click', function () {
 
     getWeather(userCityInput, userCityInputNoSpaces); // Call function get weather with userCityInput and userCityInputNoSpaces as parameters
     saveCitySearch(userCityInput, userCityInputNoSpaces);
+
+    // Set value of input field to empty string
+    $(this).parent().siblings(".search-city").val("");
+
 })
 
 // Creating function getWeather that does an API call for current weather for city input by user -- userCityInput and userCityInputNoSpaces are parameters 

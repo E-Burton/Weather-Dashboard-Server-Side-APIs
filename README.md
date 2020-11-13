@@ -30,6 +30,10 @@ THEN I am again presented with current and future conditions for that city
 
 ## Mock-Up
 
+The following animation demonstrates the application functionality:
+
+![Dashboard Demo](./Assets/weather-dashboard-demo.gif)
+
 ## Tools Implemented
 
 * Bootstrap
@@ -79,3 +83,5 @@ THEN I am again presented with current and future conditions for that city
 * [Get Last Item from Array](https://stackoverflow.com/questions/3216013/get-the-last-item-in-an-array)
 
 * [Capitalize First Letter of Each Word as User is Typing](https://www.c-sharpcorner.com/blogs/how-to-uppercase-or-capitalize-first-letter-of-each-word-using-jquery)
+
+* [Capitalize Each Word of String](https://www.w3resource.com/javascript-exercises/javascript-string-exercise-9.php)

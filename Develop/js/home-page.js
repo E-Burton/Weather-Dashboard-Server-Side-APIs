@@ -21,6 +21,8 @@ searchButton.on('click', function () {
     userInputNoSpaces = userInput.replace(/\s/g, '+');
     // Save value of userInputNoSpaces to local storage
     localStorage.setItem("userCityInputNoSpaces", userInputNoSpaces);
+    // Set value of input field to empty string
+    $(this).parent().siblings(".search-city").val("");
     window.location.href = "./Develop/search-results.html"
 })
 
